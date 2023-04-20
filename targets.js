@@ -37,6 +37,128 @@ ring 1.80in 10
 ring 0.90in X
 textcolor black
 end
+
+macro mil@15m
+ringcolor black
+innercolor white
+textcolor black
+ring 18cm 6mil
+ring 15cm 5mil
+ring 12cm 4mil
+ringcolor red
+innercolor black
+textcolor white
+ring 9cm 3mil
+ring 6cm 2mil
+ring 3cm 1mil
+textcolor black
+end
+
+macro mil@15m-small
+ringcolor black
+innercolor white
+textcolor black
+ring 6cm 2mil
+ring 4.5cm 1.5mil
+ringcolor red
+innercolor black
+textcolor white
+ring 3cm 1mil
+ring 1.5cm 0.5mil
+textcolor black
+end
+
+macro mil@25m
+ringcolor black
+innercolor white
+textcolor black
+ring 20cm 4mil
+ring 17.5cm 3.5mil
+ring 15cm 3mil
+ring 12.5cm 2.5mil
+ringcolor red
+innercolor black
+textcolor white
+ring 10cm 2mil
+ring 7.5cm 1.5mil
+ring 5cm 1mil
+ring 2.5cm 0.5mil
+textcolor black
+end
+
+macro mil@50m
+ringcolor black
+innercolor white
+textcolor black
+ring 20cm 2mil
+ring 18cm 1.8mil
+ring 16cm 1.6mil
+ring 14cm 1.4mil
+ring 12cm 1.2mil
+ringcolor red
+innercolor black
+textcolor white
+ring 10cm 1mil
+ring 8cm 0.8mil
+ring 6cm 0.6mil
+ring 4cm 0.4mil
+ring 2cm 0.2mil
+textcolor black
+end
+
+macro moa@50ft
+ringcolor black
+innercolor white
+textcolor black
+ring 8in 24moa
+ring 7in 21moa
+ring 6in 18moa
+ring 5in 15moa
+ringcolor red
+innercolor black
+textcolor white
+ring 4in 12moa
+ring 3in 9moa
+ring 2in 6moa
+ring 1in 3moa
+textcolor black
+end
+
+macro moa@25yd
+ringcolor black
+innercolor white
+textcolor black
+ring 8in 16moa
+ring 7in 14moa
+ring 6in 12moa
+ring 5in 10moa
+ringcolor red
+innercolor black
+textcolor white
+ring 4in 8moa
+ring 3in 6moa
+ring 2in 4moa
+ring 1in 2moa
+textcolor black
+end
+
+macro moa@50yd
+ringcolor black
+innercolor white
+textcolor black
+ring 8in 8moa
+ring 7in 7moa
+ring 6in 6moa
+ring 5in 5moa
+ringcolor red
+innercolor black
+textcolor white
+ring 4in 4moa
+ring 3in 3moa
+ring 2in 2moa
+ring 1in 1moa
+textcolor black
+end
 `;
 
 function onChange(ev) {
@@ -137,7 +259,11 @@ function render() {
       centerY = toPx(args[2]);
       break;
     case 'ringscale':
-      ringScale = args[1];
+      if (args.length > 2) {
+        ringScale = toPx(args[1]) / toPx(args[2]);
+      } else {
+        ringScale = args[1];
+      }
       break;
     case 'color':
       ringColor = args[1];
