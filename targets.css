@@ -1,0 +1,33 @@
+@media print {
+	@page {
+		margin: 0;
+	}
+	html {
+		border: 0;
+		margin: 0;
+		padding: 0;
+		max-height: 99%;
+	}
+	body {
+		border: 0;
+		margin: 0;
+		padding: 0;
+	}
+	#target_spec, #make_svg {
+		display: none;
+	}
+	#target_svg {
+		position: absolute;
+		left: 0px;
+		top: 0px;
+	}
+}
+
+#unit_converter {
+	display: none;
+}
+
+#target_spec {
+	width: 100%;
+	height: 30em;
+}
