@@ -39,9 +39,11 @@ textcolor black
 end
 `;
 
-function onClick(ev) {
-  ev.preventDefault();
+function onChange(ev) {
+  render();
+}
 
+function render() {
   let macros = {};
 
   let svgPrev = document.getElementById('target_svg');
@@ -192,7 +194,7 @@ function onClick(ev) {
 }
 
 function onLoad() {
-  document.getElementById('make_svg').addEventListener('click', onClick);
+  document.getElementById('target_spec').addEventListener('change', onChange);
 }
 
 window.addEventListener('load', onLoad);
