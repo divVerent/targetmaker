@@ -195,6 +195,7 @@ function render() {
 
 function onLoad() {
   document.getElementById('target_spec').addEventListener('change', onChange);
+  render();
 }
 
 window.addEventListener('load', onLoad);
