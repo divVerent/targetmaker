@@ -191,6 +191,8 @@ function render() {
 
   // Info for drawing rings.
   let ringScale = 1;
+  let ringCaliberFrom = 0;
+  let ringCaliberTo = 0;
   let ringColor = 'black';
   let innerColor = 'grey';
   let textColor = 'black';
@@ -265,6 +267,10 @@ function render() {
         ringScale = args[1];
       }
       break;
+    case 'ringcaliber':
+      ringCaliberFrom = toPx(args[1]);
+      ringCaliberTo = toPx(args[2]);
+      break;
     case 'color':
       ringColor = args[1];
       innerColor = args[2];
@@ -280,12 +286,12 @@ function render() {
       textColor = args[1];
       break;
     case 'ring': {
-      let d = toPx(args[1]);
+      let d = (toPx(args[1]) + ringCaliberFrom / 2) * ringScale - ringCaliberTo / 2;
       let t = args.slice(2).join(' ');
       let circle = document.createElementNS(ns, 'circle');
       circle.setAttribute('cx', centerX / unit);
       circle.setAttribute('cy', centerY / unit);
-      circle.setAttribute('r', d * ringScale / (2 * unit));
+      circle.setAttribute('r', d / (2 * unit));
       circle.setAttribute('stroke', ringColor);
       circle.setAttribute('stroke-width', lineWidth / unit);
       circle.setAttribute('fill', innerColor);
@@ -296,7 +302,7 @@ function render() {
       text.setAttribute('fill', textColor);
       text.setAttribute('text-anchor', 'middle');
       text.setAttribute('x', centerX / unit);
-      text.setAttribute('y', (centerY + d * ringScale / 2 - lineWidth) / unit);
+      text.setAttribute('y', (centerY + d / 2 - lineWidth) / unit);
       text.setAttribute('alignment-baseline', 'bottom');
       let str = document.createTextNode(t);
       text.appendChild(str);
