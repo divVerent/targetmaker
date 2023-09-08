@@ -93,6 +93,57 @@ ring 0.90in@50ft X
 textcolor black
 end
 
+macro SR
+ringcolor black
+innercolor white
+textcolor black
+ring 37in@200yd 5@mm
+ring 31in@200yd 6
+ring 25in@200yd 7
+ring 19in@200yd 8
+ringcolor red
+innercolor black
+textcolor white
+ring 13in@200yd 9
+ring 7in@200yd 10
+ring 3in@200yd X
+textcolor black
+end
+
+macro SR-3
+ringcolor black
+innercolor white
+textcolor black
+ring 37in@300yd 5@mm
+ring 31in@300yd 6
+ring 25in@300yd 7
+ringcolor red
+innercolor black
+textcolor white
+ring 19in@300yd 8
+ring 13in@300yd 9
+ring 7in@300yd 10
+ring 3in@300yd X
+textcolor black
+end
+
+macro MR-1
+ringcolor black
+innercolor white
+textcolor black
+ring 60in@600yd 5@mm
+ring 48in@600yd 6
+ringcolor red
+innercolor black
+textcolor white
+ring 36in@600yd 7
+ring 24in@600yd 8
+ring 18in@600yd 9
+ring 12in@600yd 10
+ring 6in@600yd X
+textcolor black
+end
+
 macro mil@15m
 ringcolor black
 innercolor white
