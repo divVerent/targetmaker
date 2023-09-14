@@ -1,5 +1,5 @@
 function toPx(w, distance) {
-  let result = /^(\d*\.?\d*)(\w+)$/.exec(w);
+  let result = /^(-?\d*\.?\d*)([a-z]+)$/.exec(w);
   if (result == null) {
     console.error("could not find unit: " + w);
     return 0;
@@ -33,6 +33,13 @@ function toPx(w, distance) {
   }
 }
 
+function toColor(colors, color) {
+  if (colors[color] != null) {
+    return colors[color];
+  }
+  return color;
+}
+
 function nicePrint(val) {
   if (val >= 100) {
     return val.toFixed(0);
@@ -45,6 +52,11 @@ function nicePrint(val) {
 
 // TODO: also accept angles in form 5in@100ft.
 // Then scale them according to caliber.
+// This assumes that this is a diameter, not a radius!
+// I.e.:
+// 1. Expand by caliber.
+// 2. Scale.
+// 3. Contract by caliber.
 function toPxAdjusted(w, scale, distance, caliberFrom, caliberTo) {
   let result = /^([^@]*)(?:@(.*))?$/.exec(w);
   if (result == null) {
@@ -56,20 +68,20 @@ function toPxAdjusted(w, scale, distance, caliberFrom, caliberTo) {
     let baseDistance = toPx(result[2], null);
     scale *= distance / baseDistance;
   }
-  return (baseValue + caliberFrom / 2) * scale - caliberTo / 2;
+  return (baseValue + caliberFrom) * scale - caliberTo;
 }
 
 const preamble = `
 macro B-2
-ringcolor black
-innercolor white
-textcolor black
+ringcolor $target_ring
+innercolor $target_inner
+textcolor $target_text
 ring 7.33in@50ft 4@mm
 ring 5.56in@50ft 5
 ring 4.16in@50ft 6
-ringcolor red
-innercolor black
-textcolor white
+ringcolor $bullseye_ring
+innercolor $bullseye_inner
+textcolor $bullseye_text
 ring 3.07in@50ft 7
 ring 2.23in@50ft 8
 ring 1.54in@50ft 9
@@ -78,15 +90,15 @@ textcolor black
 end
 
 macro B-3
-ringcolor black
-innercolor white
-textcolor black
+ringcolor $target_ring
+innercolor $target_inner
+textcolor $target_text
 ring 8.32in@50ft 6@mm
 ring 6.14in@50ft 7
 ring 4.46in@50ft 8
-ringcolor red
-innercolor black
-textcolor white
+ringcolor $bullseye_ring
+innercolor $bullseye_inner
+textcolor $bullseye_text
 ring 3.06in@50ft 9
 ring 1.80in@50ft 10
 ring 0.90in@50ft X
@@ -94,16 +106,16 @@ textcolor black
 end
 
 macro SR
-ringcolor black
-innercolor white
-textcolor black
+ringcolor $target_ring
+innercolor $target_inner
+textcolor $target_text
 ring 37in@200yd 5@mm
 ring 31in@200yd 6
 ring 25in@200yd 7
 ring 19in@200yd 8
-ringcolor red
-innercolor black
-textcolor white
+ringcolor $bullseye_ring
+innercolor $bullseye_inner
+textcolor $bullseye_text
 ring 13in@200yd 9
 ring 7in@200yd 10
 ring 3in@200yd X
@@ -111,15 +123,15 @@ textcolor black
 end
 
 macro SR-3
-ringcolor black
-innercolor white
-textcolor black
+ringcolor $target_ring
+innercolor $target_inner
+textcolor $target_text
 ring 37in@300yd 5@mm
 ring 31in@300yd 6
 ring 25in@300yd 7
-ringcolor red
-innercolor black
-textcolor white
+ringcolor $bullseye_ring
+innercolor $bullseye_inner
+textcolor $bullseye_text
 ring 19in@300yd 8
 ring 13in@300yd 9
 ring 7in@300yd 10
@@ -128,14 +140,14 @@ textcolor black
 end
 
 macro MR-1
-ringcolor black
-innercolor white
-textcolor black
+ringcolor $target_ring
+innercolor $target_inner
+textcolor $target_text
 ring 60in@600yd 5@mm
 ring 48in@600yd 6
-ringcolor red
-innercolor black
-textcolor white
+ringcolor $bullseye_ring
+innercolor $bullseye_inner
+textcolor $bullseye_text
 ring 36in@600yd 7
 ring 24in@600yd 8
 ring 18in@600yd 9
@@ -145,15 +157,15 @@ textcolor black
 end
 
 macro mil@15m
-ringcolor black
-innercolor white
-textcolor black
+ringcolor $target_ring
+innercolor $target_inner
+textcolor $target_text
 ring 18cm 6mil@mm
 ring 15cm 5mil
 ring 12cm 4mil
-ringcolor red
-innercolor black
-textcolor white
+ringcolor $bullseye_ring
+innercolor $bullseye_inner
+textcolor $bullseye_text
 ring 9cm 3mil
 ring 6cm 2mil
 ring 3cm 1mil
@@ -161,30 +173,30 @@ textcolor black
 end
 
 macro mil@15m-small
-ringcolor black
-innercolor white
-textcolor black
+ringcolor $target_ring
+innercolor $target_inner
+textcolor $target_text
 ring 6cm 2mil@mm
 ring 4.5cm 1.5mil
-ringcolor red
-innercolor black
-textcolor white
+ringcolor $bullseye_ring
+innercolor $bullseye_inner
+textcolor $bullseye_text
 ring 3cm 1mil
 ring 1.5cm 0.5mil
 textcolor black
 end
 
 macro mil@25m
-ringcolor black
-innercolor white
-textcolor black
+ringcolor $target_ring
+innercolor $target_inner
+textcolor $target_text
 ring 20cm 4mil@mm
 ring 17.5cm 3.5mil
 ring 15cm 3mil
 ring 12.5cm 2.5mil
-ringcolor red
-innercolor black
-textcolor white
+ringcolor $bullseye_ring
+innercolor $bullseye_inner
+textcolor $bullseye_text
 ring 10cm 2mil
 ring 7.5cm 1.5mil
 ring 5cm 1mil
@@ -193,17 +205,17 @@ textcolor black
 end
 
 macro mil@50m
-ringcolor black
-innercolor white
-textcolor black
+ringcolor $target_ring
+innercolor $target_inner
+textcolor $target_text
 ring 20cm 2mil@mm
 ring 18cm 1.8mil
 ring 16cm 1.6mil
 ring 14cm 1.4mil
 ring 12cm 1.2mil
-ringcolor red
-innercolor black
-textcolor white
+ringcolor $bullseye_ring
+innercolor $bullseye_inner
+textcolor $bullseye_text
 ring 10cm 1mil
 ring 8cm 0.8mil
 ring 6cm 0.6mil
@@ -213,16 +225,16 @@ textcolor black
 end
 
 macro moa@50ft
-ringcolor black
-innercolor white
-textcolor black
+ringcolor $target_ring
+innercolor $target_inner
+textcolor $target_text
 ring 8in 24moa@mm
 ring 7in 21moa
 ring 6in 18moa
 ring 5in 15moa
-ringcolor red
-innercolor black
-textcolor white
+ringcolor $bullseye_ring
+innercolor $bullseye_inner
+textcolor $bullseye_text
 ring 4in 12moa
 ring 3in 9moa
 ring 2in 6moa
@@ -231,16 +243,16 @@ textcolor black
 end
 
 macro moa@25yd
-ringcolor black
-innercolor white
-textcolor black
+ringcolor $target_ring
+innercolor $target_inner
+textcolor $target_text
 ring 8in 16moa@mm
 ring 7in 14moa
 ring 6in 12moa
 ring 5in 10moa
-ringcolor red
-innercolor black
-textcolor white
+ringcolor $bullseye_ring
+innercolor $bullseye_inner
+textcolor $bullseye_text
 ring 4in 8moa
 ring 3in 6moa
 ring 2in 4moa
@@ -249,21 +261,92 @@ textcolor black
 end
 
 macro moa@50yd
-ringcolor black
-innercolor white
-textcolor black
+ringcolor $target_ring
+innercolor $target_inner
+textcolor $target_text
 ring 8in 8moa@mm
 ring 7in 7moa
 ring 6in 6moa
 ring 5in 5moa
-ringcolor red
-innercolor black
-textcolor white
+ringcolor $bullseye_ring
+innercolor $bullseye_inner
+textcolor $bullseye_text
 ring 4in 4moa
 ring 3in 3moa
 ring 2in 2moa
 ring 1in 1moa
 textcolor black
+end
+
+# Ready-made pages to print on Letter.
+macro PrecisionPistol@25ft
+center 2in -5in
+fontsize 18pt
+text Precision Pistol @ 25ft
+fontsize 12pt
+distance 25ft
+targetcaliber .30in
+center -2in -3.25in
+use B-2
+center -2in -1.25in
+text Slow Fire
+center 2in 0in
+use B-3
+center 2in 2.25in
+text Timed Fire
+center -2in 3.25in
+use B-3
+center -2in 1in
+text Rapid Fire
+end
+
+macro HighPowerRifle@50ft
+fontsize 9pt
+distance 50ft
+center -2.125in -3.667in
+use SR
+center 2.125in -3.667in
+use SR
+center 0in -3.834in
+text slow standing 10
+center 0in -3.5in
+text sitting rapid 10
+center -2.125in 0in
+use SR-3
+center 2.125in 0in
+use SR-3
+center 0in 0in
+text prone rapid 10
+center -2.125in 3.667in
+use MR-1
+center 2.125in 3.667in
+use MR-1
+center 0in 3.667in
+text prone slow 20
+end
+
+macro HighPowerRifle@25yd
+fontsize 9pt
+distance 25yd
+targetcaliber .30in
+center 0in -2.5in
+use SR
+center -3.25in -2.5in
+text slow standing 10
+center 3.25in -2.5in
+text sitting rapid 10
+center -2.125in 1in
+use SR-3
+center 2.125in 1in
+use SR-3
+center -in 1in
+text prone rapid 10
+center -2.125in 4in
+use MR-1
+center 2.125in 4in
+use MR-1
+center 0in 4in
+text prone slow 20
 end
 `;
 
@@ -290,8 +373,8 @@ function render() {
   let unit = 1 * mm;
   let paperX = 297 * mm;
   let paperY = 210 * mm;
-  let centerX = paperX / 2;
-  let centerY = paperY / 2;
+  let centerX = 0;
+  let centerY = 0;
   let lineWidth = 1 * mm;
   let fontSize = 10 * mm;
 
@@ -307,6 +390,15 @@ function render() {
   let stack = (preamble + str).split(/\r?\n/).reverse();
 
   let recordToMacro = null;
+
+  let colors = {
+    '$target_ring': 'black',
+    '$target_inner': 'white',
+    '$target_text': 'black',
+    '$bullseye_ring': 'red',
+    '$bullseye_inner': 'black',
+    '$bullseye_text': 'white',
+  };
 
   while (stack.length > 0) {
     let l = stack.pop();
@@ -377,26 +469,31 @@ function render() {
         ringScale = args[1];
       }
       break;
-    case 'ringcaliber':
+    case 'targetcaliber':
       ringCaliberFrom = toPx(args[1], null);
-      ringCaliberTo = toPx(args[2], null);
       break;
-    case 'color':
-      ringColor = args[1];
-      innerColor = args[2];
-      textColor = args[3];
+    case 'guncaliber':
+      ringCaliberTo = toPx(args[1], null);
       break;
     case 'ringcolor':
-      ringColor = args[1];
+      ringColor = toColor(colors, args[1]);
       break;
     case 'innercolor':
-      innerColor = args[1];
+      innerColor = toColor(colors, args[1]);
       break;
     case 'textcolor':
-      textColor = args[1];
+      textColor = toColor(colors, args[1]);
+      break;
+    case 'color':
+      colors[args[1]] = toColor(colors, args[2]);
       break;
     case 'ring': {
+      // Note: d is a diameter.
       let d = toPxAdjusted(args[1], ringScale, distance, ringCaliberFrom, ringCaliberTo);
+      d -= lineWidth;
+      if (d <= 0) {
+        break;
+      }
       let t = args.slice(2).join(' ');
       let result = /(.*)@(\w+)/.exec(t);
       if (result != null) {
@@ -439,7 +536,7 @@ function render() {
   }
   svg.setAttribute('width', paperX + 'px');
   svg.setAttribute('height', paperY + 'px');
-  svg.setAttribute('viewBox', '0 0 ' + (paperX / unit) + ' ' + (paperY / unit));
+  svg.setAttribute('viewBox', (-paperX * 0.5 / unit) + ' ' + (-paperY * 0.5 / unit) + ' ' + (paperX / unit) + ' ' + (paperY / unit));
   document.body.appendChild(svg);
 }
 
