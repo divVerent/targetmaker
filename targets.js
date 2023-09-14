@@ -156,134 +156,132 @@ ring 6in@600yd X
 textcolor black
 end
 
-macro mil@15m
+macro 6mil/6
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
-ring 18cm 6mil@mm
-ring 15cm 5mil
-ring 12cm 4mil
+ring 6mil 6mil@mm
+ring 5mil 5mil
+ring 4mil 4mil
+ring 3mil 3mil
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
-ring 9cm 3mil
-ring 6cm 2mil
-ring 3cm 1mil
+ring 2mil 2mil
+ring 1mil 1mil
 textcolor black
 end
 
-macro mil@15m-small
+macro 2mil/4
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
-ring 6cm 2mil@mm
-ring 4.5cm 1.5mil
+ring 2mil 2mil@mm
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
-ring 3cm 1mil
-ring 1.5cm 0.5mil
+ring 1.5mil 1.5mil
+ring 1mil 1mil
+ring 0.5mil 0.5mil
 textcolor black
 end
 
-macro mil@25m
+macro 4mil/8
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
-ring 20cm 4mil@mm
-ring 17.5cm 3.5mil
-ring 15cm 3mil
-ring 12.5cm 2.5mil
+ring 4mil 4mil@mm
+ring 3.5mil 3.5mil
+ring 3mil 3mil
+ring 2.5mil 2.5mil
+ring 2mil 2mil
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
-ring 10cm 2mil
-ring 7.5cm 1.5mil
-ring 5cm 1mil
-ring 2.5cm 0.5mil
+ring 1.5mil 1.5mil
+ring 1mil 1mil
+ring 0.5mil 0.5mil
 textcolor black
 end
 
-macro mil@50m
+macro 2mil/10
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
-ring 20cm 2mil@mm
-ring 18cm 1.8mil
-ring 16cm 1.6mil
-ring 14cm 1.4mil
-ring 12cm 1.2mil
+ring 2mil 2mil@mm
+ring 1.8mil 1.8mil
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
-ring 10cm 1mil
-ring 8cm 0.8mil
-ring 6cm 0.6mil
-ring 4cm 0.4mil
-ring 2cm 0.2mil
+ring 1.6mil 1.6mil
+ring 1.4mil 1.4mil
+ring 1.2mil 1.2mil
+ring 1mil 1mil
+ring 0.8mil 0.8mil
+ring 0.6mil 0.6mil
+ring 0.4mil 0.4mil
+ring 0.2mil 0.2mil
 textcolor black
 end
 
-macro moa@50ft
+macro 24moa/8
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
-ring 8in 24moa@mm
-ring 7in 21moa
-ring 6in 18moa
-ring 5in 15moa
+ring 24moa 24moa@mm
+ring 21moa 21moa
+ring 18moa 18moa
+ring 15moa 15moa
+ring 12moa 12moa
+ring 9moa 9moa
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
-ring 4in 12moa
-ring 3in 9moa
-ring 2in 6moa
-ring 1in 3moa
+ring 6moa 6moa
+ring 3moa 3moa
 textcolor black
 end
 
-macro moa@25yd
+macro 16moa/8
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
-ring 8in 16moa@mm
-ring 7in 14moa
-ring 6in 12moa
-ring 5in 10moa
+ring 16moa 16moa@mm
+ring 14moa 14moa
+ring 12moa 12moa
+ring 10moa 10moa
+ring 8moa 8moa
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
-ring 4in 8moa
-ring 3in 6moa
-ring 2in 4moa
-ring 1in 2moa
+ring 6moa 6moa
+ring 4moa 4moa
+ring 2moa 2moa
 textcolor black
 end
 
-macro moa@50yd
+macro 8moa/8
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
-ring 8in 8moa@mm
-ring 7in 7moa
-ring 6in 6moa
-ring 5in 5moa
+ring 8moa 8moa@mm
+ring 7moa 7moa
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
-ring 4in 4moa
-ring 3in 3moa
-ring 2in 2moa
-ring 1in 1moa
+ring 6moa 6moa
+ring 5moa 5moa
+ring 4moa 4moa
+ring 3moa 3moa
+ring 2moa 2moa
+ring 1moa 1moa
 textcolor black
 end
 
 # Ready-made pages to print on Letter.
 macro PrecisionPistol@25ft
 center 2in -5in
-fontsize 18pt
 text Precision Pistol @ 25ft
-fontsize 12pt
 distance 25ft
 targetcaliber .30in
 center -2in -3.25in
@@ -301,7 +299,6 @@ text Rapid Fire
 end
 
 macro HighPowerRifle@50ft
-fontsize 9pt
 distance 50ft
 center -2.125in -3.667in
 use SR
@@ -326,7 +323,6 @@ text prone slow 20
 end
 
 macro HighPowerRifle@25yd
-fontsize 9pt
 distance 25yd
 targetcaliber .30in
 center 0in -2.5in
@@ -422,6 +418,10 @@ function render() {
     case 'use': {
       // Push macro content in reverse order.
       let m = macros[args[1]];
+      if (m == null) {
+        alert('unknown macro: ' + args[1]);
+        break;
+      }
       for (let i = m.length - 1; i >= 0; i--) {
         stack.push(m[i]);
       }
