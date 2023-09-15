@@ -280,10 +280,10 @@ end
 
 # Ready-made pages to print on Letter.
 macro PrecisionPistol@25ft
+targetcaliber .22in
 center 2in -5in
 text Precision Pistol @ 25ft
 distance 25ft
-targetcaliber .30in
 center -2in -3.25in
 use B-2
 center -2in -1.25in
@@ -300,6 +300,7 @@ end
 
 macro HighPowerRifle@50ft
 distance 50ft
+targetcaliber .30in
 center -2.125in -3.667in
 use SR
 center 2.125in -3.667in
