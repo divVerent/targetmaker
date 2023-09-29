@@ -306,7 +306,7 @@ use SR
 center 2.125in -3.667in
 use SR
 center 0in -3.834in
-text slow standing 10
+text standing slow  10
 center 0in -3.5in
 text sitting rapid 10
 center -2.125in 0in
@@ -329,7 +329,7 @@ targetcaliber .30in
 center 0in -2.5in
 use SR
 center -3.25in -2.5in
-text slow standing 10
+text standing slow 10
 center 3.25in -2.5in
 text sitting rapid 10
 center -2.125in 1in
