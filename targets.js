@@ -1,5 +1,5 @@
 function toPx(w, distance) {
-  let result = /^(-?\d*\.?\d*)([a-z]+)$/.exec(w);
+  let result = /^([-+]?\d*\.?\d*)([a-z]+)$/.exec(w);
   if (result == null) {
     console.error("could not find unit: " + w);
     return 0;
@@ -344,6 +344,22 @@ center 2.125in 4in
 use MR-1
 center 0in 4in
 text prone slow 20
+end
+
+macro Six@50ft
+distance 50ft
+center -2in -4in
+use 4mil/8
+center 2in -4in
+use 4mil/8
+center -2in 0in
+use 4mil/8
+center 2in 0in
+use 4mil/8
+center -2in 4in
+use 4mil/8
+center 2in 4in
+use 4mil/8
 end
 `;
 
