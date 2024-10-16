@@ -298,6 +298,21 @@ center -2in 1in
 text Rapid Fire
 end
 
+macro PrecisionPistol@10m
+targetcaliber .22in
+center 0in -5.25in
+text Precision Pistol @ 25ft
+distance 10m
+center 0in -2.75in
+use B-2
+center 0in -0.25in
+text Slow Fire
+center 0in 2.75in
+use B-3
+center 0in 0in
+text Timed+Rapid Fire
+end
+
 macro HighPowerRifle@50ft
 distance 50ft
 targetcaliber .30in
