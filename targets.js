@@ -301,7 +301,7 @@ end
 macro PrecisionPistol@10m
 targetcaliber .22in
 center 0in -5.25in
-text Precision Pistol @ 25ft
+text Precision Pistol @ 10m
 distance 10m
 center 0in -2.75in
 use B-2
