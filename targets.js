@@ -172,13 +172,27 @@ macro AP-1
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
-ring 18in@50ft 5@mm
+ring 18in@50ft 5
 ring 12in@50ft 8
-ring 8in@50ft 10
+ring 8in@50ft 10@mm
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
 ring 4in@50ft X
+textcolor black
+end
+
+macro AP-2
+ringcolor $target_ring
+innercolor $target_inner
+textcolor $target_text
+ring 5in@15ft 5@mm
+ring 3.36in@15ft 8
+ring 2.24in@15ft 10
+ringcolor $bullseye_ring
+innercolor $bullseye_inner
+textcolor $bullseye_text
+ring 1.12in@15ft X
 textcolor black
 end
 
