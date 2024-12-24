@@ -24,8 +24,16 @@ function toPx(w, distance) {
   case "m":
     return amount * 96 / 25.4 * 1000;
   case "mil":
+    if (distance == null) {
+      console.error("could convert mil without a set distance: " + w);
+      return 0;
+    }
     return amount * distance / 1000;
   case "moa":
+    if (distance == null) {
+      console.error("could convert moa without a set distance: " + w);
+      return 0;
+    }
     return amount * distance / 3600;
   default:
     console.error("could not recognize unit: " + w);
@@ -64,11 +72,15 @@ function toPxAdjusted(w, scale, distance, caliberFrom, caliberTo) {
     return 0;
   }
   let baseValue = toPx(result[1], distance);
-  if (result[2] != null) {
+  if (result[2] != null && distance != null) {
     let baseDistance = toPx(result[2], null);
     scale *= distance / baseDistance;
   }
-  return (baseValue + caliberFrom) * scale - caliberTo;
+  if (caliberFrom != null && caliberTo != null) {
+    return (baseValue + caliberFrom) * scale - caliberTo;
+  } else {
+    return baseValue * scale;
+  }
 }
 
 const preamble = `
@@ -153,6 +165,60 @@ ring 24in@600yd 8
 ring 18in@600yd 9
 ring 12in@600yd 10
 ring 6in@600yd X
+textcolor black
+end
+
+macro AP-1
+ringcolor $target_ring
+innercolor $target_inner
+textcolor $target_text
+ring 18in@50ft 5@mm
+ring 12in@50ft 8
+ring 8in@50ft 10
+ringcolor $bullseye_ring
+innercolor $bullseye_inner
+textcolor $bullseye_text
+ring 4in@50ft X
+textcolor black
+end
+
+macro AR-5
+ringcolor $target_ring
+innercolor $target_inner
+textcolor $target_text
+ring 45.5mm@10m 1@mm
+ring 40.5mm@10m 2
+ring 35.5mm@10m 3
+ringcolor $bullseye_ring
+innercolor $bullseye_inner
+textcolor $bullseye_text
+ring 30.5mm@10m 4
+ring 25.5mm@10m 5
+ring 20.5mm@10m 6
+ring 15.5mm@10m 7
+ring 10.5mm@10m 8
+ring 5.5mm@10m 9
+ring 0.5mm@10m 10
+textcolor black
+end
+
+macro B-40
+ringcolor $target_ring
+innercolor $target_inner
+textcolor $target_text
+ring 155.5mm@10m 1@mm
+ring 139.5mm@10m 2
+ring 123.5mm@10m 3
+ring 107.5mm@10m 4
+ring 91.5mm@10m 5
+ring 75.5mm@10m 6
+ringcolor $bullseye_ring
+innercolor $bullseye_inner
+textcolor $bullseye_text
+ring 59.5mm@10m 7
+ring 43.5mm@10m 8
+ring 27.5mm@10m 9
+ring 11.5mm@10m 10
 textcolor black
 end
 
@@ -376,6 +442,34 @@ use 4mil/8
 center 2in 4in
 use 4mil/8
 end
+
+macro AR-5/10
+distance 10m
+center -2.8in -4.2in
+use AR-5
+center 0in -4.2in
+use AR-5
+center 2.8in -4.2in
+use AR-5
+center -2.8in -1.4in
+use AR-5
+center 0in -1.4in
+use AR-5
+center 2.8in -1.4in
+use AR-5
+center -2.8in 4.2in
+use AR-5
+center 0in 4.2in
+use AR-5
+center 2.8in 4.2in
+use AR-5
+center -2.8in 1.4in
+use AR-5
+center 0in 1.4in
+use AR-5
+center 2.8in 1.4in
+use AR-5
+end
 `;
 
 function onChange(ev) {
@@ -403,17 +497,17 @@ function render() {
   let paperY = 210 * mm;
   let centerX = 0;
   let centerY = 0;
-  let lineWidth = 1 * mm;
+  let lineWidth = 0.2 * mm;
   let fontSize = 10 * mm;
 
   // Info for drawing rings.
   let ringScale = 1;
-  let ringCaliberFrom = 0;
-  let ringCaliberTo = 0;
+  let ringCaliberFrom = null;
+  let ringCaliberTo = null;
   let ringColor = 'black';
   let innerColor = 'grey';
   let textColor = 'black';
-  let distance = toPx('50ft', null);
+  let distance = null;
 
   let stack = (preamble + str).split(/\r?\n/).reverse();
 
@@ -492,7 +586,11 @@ function render() {
       centerY = toPx(args[2], null);
       break;
     case 'distance':
-      distance = toPx(args[1], null);
+      if (args.length > 1) {
+        distance = toPx(args[1], null);
+      } else {
+        distance = null;
+      }
       break;
     case 'ringscale':
       if (args.length > 2) {
@@ -502,10 +600,18 @@ function render() {
       }
       break;
     case 'targetcaliber':
-      ringCaliberFrom = toPx(args[1], null);
+      if (args.length > 1) {
+        ringCaliberFrom = toPx(args[1], null);
+      } else {
+        ringCaliberFrom = null;
+      }
       break;
     case 'guncaliber':
-      ringCaliberTo = toPx(args[1], null);
+      if (args.length > 1) {
+        ringCaliberTo = toPx(args[1], null);
+      } else {
+        ringCaliberTo = null
+      }
       break;
     case 'ringcolor':
       ringColor = toColor(colors, args[1]);
@@ -531,7 +637,7 @@ function render() {
       if (result != null) {
         let prefix = result[1];
         let unit = result[2];
-        let unitValue = toPx('1' + unit, ringScale * distance);
+        let unitValue = toPx('1' + unit, distance == null ? null : ringScale * distance);
         let amount = d / unitValue;
         t = result[1] + '@' + nicePrint(amount) + unit;
       }
