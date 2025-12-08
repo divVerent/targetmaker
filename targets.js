@@ -360,10 +360,10 @@ end
 
 # Ready-made pages to print on Letter.
 macro PrecisionPistol@25ft
-targetcaliber .22in
+targetcaliber? .22in
 center 2in -5in
 text Precision Pistol @ 25ft
-distance 25ft
+distance? 25ft
 center -2in -3.25in
 use B-2
 center -2in -1.25in
@@ -379,10 +379,10 @@ text Rapid Fire
 end
 
 macro PrecisionPistol@10m
-targetcaliber .22in
+targetcaliber? .22in
 center 0in -5.25in
 text Precision Pistol @ 10m
-distance 10m
+distance? 10m
 center 0in -2.75in
 use B-2
 center 0in -0.25in
@@ -394,8 +394,8 @@ text Timed+Rapid Fire
 end
 
 macro HighPowerRifle@50ft
-distance 50ft
-targetcaliber .30in
+distance? 50ft
+targetcaliber? .30in
 center -2.125in -3.667in
 use SR
 center 2.125in -3.667in
@@ -419,8 +419,8 @@ text prone slow 20
 end
 
 macro HighPowerRifle@25yd
-distance 25yd
-targetcaliber .30in
+distance? 25yd
+targetcaliber? .30in
 center 0in -2.5in
 use SR
 center -3.25in -2.5in
@@ -442,7 +442,7 @@ text prone slow 20
 end
 
 macro Six@50ft
-distance 50ft
+distance? 50ft
 center -2in -4in
 use 4mil/8
 center 2in -4in
@@ -458,7 +458,7 @@ use 4mil/8
 end
 
 macro AR-5/10
-distance 10m
+distance? 10m
 center -2.8in -4.2in
 use AR-5
 center 0in -4.2in
@@ -517,11 +517,14 @@ function render() {
   // Info for drawing rings.
   let ringScale = 1;
   let ringCaliberFrom = null;
+  let ringCaliberFromSet = false;
   let ringCaliberTo = null;
+  let ringCaliberToSet = false;
   let ringColor = 'black';
   let innerColor = 'grey';
   let textColor = 'black';
   let distance = null;
+  let distanceSet = false;
 
   let stack = (preamble + str).split(/\r?\n/).reverse();
 
@@ -599,7 +602,12 @@ function render() {
       centerX = toPx(args[1], null);
       centerY = toPx(args[2], null);
       break;
+    case 'distance?':
+      if (distanceSet)
+        break;
+      // fallthrough
     case 'distance':
+      distanceSet = true;
       if (args.length > 1) {
         distance = toPx(args[1], null);
       } else {
@@ -613,14 +621,24 @@ function render() {
         ringScale = args[1];
       }
       break;
+    case 'targetcaliber?':
+      if (ringCaliberFromSet)
+        break;
+      // fallthrough
     case 'targetcaliber':
+      ringCaliberFromSet = true;
       if (args.length > 1) {
         ringCaliberFrom = toPx(args[1], null);
       } else {
         ringCaliberFrom = null;
       }
       break;
+    case 'guncaliber?':
+      if (ringCaliberToSet)
+        break;
+      // fallthrough
     case 'guncaliber':
+      ringCaliberToSet = true
       if (args.length > 1) {
         ringCaliberTo = toPx(args[1], null);
       } else {
