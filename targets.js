@@ -381,13 +381,13 @@ end
 macro PrecisionPistol@5m
 targetcaliber? .22in
 center -8.5cm -8.5cm
-text ·
+text +
 center -8.5cm 8.5cm
-text ·
+text +
 center 8.5cm -8.5cm
-text ·
+text +
 center 8.5cm 8.5cm
-text ·
+text +
 center 0cm -8cm
 distance? 5m
 text Precision Pistol @ %distance%
