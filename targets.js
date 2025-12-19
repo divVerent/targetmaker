@@ -362,8 +362,8 @@ end
 macro PrecisionPistol@25ft
 targetcaliber? .22in
 center 2in -5in
-text Precision Pistol @ 25ft
 distance? 25ft
+text Precision Pistol @ %distance%
 center -2in -3.25in
 use B-2
 center -2in -1.25in
@@ -378,11 +378,38 @@ center -2in 1in
 text Rapid Fire
 end
 
+macro PrecisionPistol@5m
+targetcaliber? .22in
+center -8.5cm -8.5cm
+text ·
+center -8.5cm 8.5cm
+text ·
+center 8.5cm -8.5cm
+text ·
+center 8.5cm 8.5cm
+text ·
+center 0cm -8cm
+distance? 5m
+text Precision Pistol @ %distance%
+center -4cm -4cm
+use B-2
+center -4cm -0.5cm
+text Slow Fire
+center 4cm 0cm
+use B-3
+center 4cm 4cm
+text Timed Fire
+center -4cm 4cm
+use B-3
+center -4cm 8cm
+text Rapid Fire
+end
+
 macro PrecisionPistol@10m
 targetcaliber? .22in
 center 0in -5.25in
-text Precision Pistol @ 10m
 distance? 10m
+text Precision Pistol @ %distance%
 center 0in -2.75in
 use B-2
 center 0in -0.25in
@@ -524,6 +551,7 @@ function render() {
   let innerColor = 'grey';
   let textColor = 'black';
   let distance = null;
+  let distanceStr = null;
   let distanceSet = false;
 
   let stack = (preamble + str).split(/\r?\n/).reverse();
@@ -584,7 +612,7 @@ function render() {
       fontSize = toPx(args[1], null);
       break;
     case 'text': {
-      let t = args.slice(1).join(' ');
+      let t = args.slice(1).join(' ').replaceAll('%distance%', distanceStr);
       let text = document.createElementNS(ns, 'text');
       text.setAttribute('font-size', fontSize / unit);
       text.setAttribute('stroke', 'none');
@@ -610,8 +638,10 @@ function render() {
       distanceSet = true;
       if (args.length > 1) {
         distance = toPx(args[1], null);
+        distanceStr = args[1];
       } else {
         distance = null;
+        distanceStr = null;
       }
       break;
     case 'ringscale':
