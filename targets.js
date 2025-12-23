@@ -513,11 +513,32 @@ use AR-5
 end
 `;
 
-function onChange(ev) {
+let blockEvents = true; // Initial condition for onLoad.
+let changeMissed = null;
+
+async function startBlocking() {
+  blockEvents = true;
+}
+
+async function stopBlocking() {
+  blockEvents = false;
+  if (changeMissed) {
+    await onChange(changeMissed);
+  }
+}
+
+async function onChange(ev) {
+  if (blockEvents) {
+    changeMissed = ev;
+    return;
+  }
+  changeMissed = null;
+  await startBlocking();
   if (!render()) {
     return;
   }
-  saveState();
+  await saveState();
+  await stopBlocking();
 }
 
 function render() {
@@ -802,28 +823,52 @@ function render() {
   return ok;
 }
 
-function loadState() {
+async function loadState() {
   if (location.hash.substr(0, 1) == '#') {
-    decodeState(location.hash.substr(1));
+    await decodeState(location.hash.substr(1));
   }
 }
 
-function saveState() {
-  history.pushState(null, null, '#' + encodeState());
+async function saveState() {
+  history.pushState(null, null, '#' + await encodeState());
 }
 
-function decodeState(str) {
-  document.getElementById('target_spec').value = atob(str);
+async function slurp(reader) {
+  let buf = [];
+  for (;;) {
+    const ret = await reader.read();
+    if (ret.done) {
+      break;
+    }
+    const chunk = ret.value;
+    buf.push(...chunk);
+  }
+  return new Uint8Array(buf);
 }
 
-function encodeState() {
-  return btoa(document.getElementById('target_spec').value);
+async function decodeState(str) {
+  const buf = Uint8Array.fromBase64(str);
+  const stream = new DecompressionStream('deflate');
+  const writer = stream.writable.getWriter();
+  writer.write(buf);
+  writer.close();
+  document.getElementById('target_spec').value = new TextDecoder().decode(await slurp(stream.readable.getReader()));
 }
 
-function onLoad() {
+async function encodeState() {
+  const stream = new CompressionStream('deflate');
+  const writer = stream.writable.getWriter();
+  writer.write(new TextEncoder().encode(document.getElementById('target_spec').value));
+  writer.close();
+  const buf = await slurp(stream.readable.getReader());
+  return buf.toBase64();
+}
+
+async function onLoad() {
   document.getElementById('target_spec').addEventListener('change', onChange);
-  loadState();
+  await loadState();
   render();
+  await stopBlocking();
 }
 
 window.addEventListener('load', onLoad);
