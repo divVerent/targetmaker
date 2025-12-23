@@ -514,10 +514,14 @@ end
 `;
 
 function onChange(ev) {
-  render();
+  if (!render()) {
+    return;
+  }
+  saveState();
 }
 
 function render() {
+  let ok = true;
   let macros = {};
 
   let svgPrev = document.getElementById('target_svg');
@@ -596,6 +600,7 @@ function render() {
       let m = macros[args[1]];
       if (m == null) {
         alert('unknown macro: ' + args[1]);
+        ok = false;
         break;
       }
       for (let i = m.length - 1; i >= 0; i--) {
@@ -783,6 +788,7 @@ function render() {
       break;
     default:
       alert('unknown command: ' + args[0]);
+      ok = false;
       break;
     }
   }
@@ -793,10 +799,30 @@ function render() {
   svg.setAttribute('height', paperY + 'px');
   svg.setAttribute('viewBox', (-paperX * 0.5 / unit) + ' ' + (-paperY * 0.5 / unit) + ' ' + (paperX / unit) + ' ' + (paperY / unit));
   document.body.appendChild(svg);
+  return ok;
+}
+
+function loadState() {
+  if (location.hash.substr(0, 1) == '#') {
+    decodeState(location.hash.substr(1));
+  }
+}
+
+function saveState() {
+  history.pushState(null, null, '#' + encodeState());
+}
+
+function decodeState(str) {
+  document.getElementById('target_spec').value = atob(str);
+}
+
+function encodeState() {
+  return btoa(document.getElementById('target_spec').value);
 }
 
 function onLoad() {
   document.getElementById('target_spec').addEventListener('change', onChange);
+  loadState();
   render();
 }
 
