@@ -553,8 +553,13 @@ function render() {
   let distance = null;
   let distanceStr = null;
   let distanceSet = false;
+  let sightedInAt = null;
+  let scopeHeight = 0 * mm;
+  let speedPerSec = Infinity;
+  let gravityPerSec2 = 9810 * mm;
 
   let stack = (preamble + str).split(/\r?\n/).reverse();
+  let crosshairs = [];
 
   let recordToMacro = null;
 
@@ -629,6 +634,7 @@ function render() {
     case 'center':
       centerX = toPx(args[1], null);
       centerY = toPx(args[2], null);
+      crosshairDrawn = false;
       break;
     case 'distance?':
       if (distanceSet)
@@ -687,6 +693,18 @@ function render() {
     case 'color':
       colors[args[1]] = toColor(colors, args[2]);
       break;
+    case 'sightedInAt':
+      sightedInAt = toPx(args[1], null);
+      break;
+    case 'scopeHeight':
+      scopeHeight = toPx(args[1], null);
+      break;
+    case 'speedPerSec':
+      speedPerSec = toPx(args[1], null);
+      break;
+    case 'gravityPerSec2':
+      gravityPerSec2 = toPx(args[1], null);
+      break;
     case 'ring': {
       // Note: d is a diameter.
       let d = toPxAdjusted(args[1], ringScale, distance, ringCaliberFrom, ringCaliberTo);
@@ -722,6 +740,40 @@ function render() {
       let str = document.createTextNode(t);
       text.appendChild(str);
       svg.appendChild(text);
+      if (sightedInAt != null && !crosshairDrawn) {
+        // Compute point of aim adjustment!
+        // Assume that at sightedInAt, POI == POA.
+        // As we do not know aim angle, assume aim angle = 0.
+        // Also, POB = point where barrel points at.
+        // Thus:
+        // POA = POB + scopeHeight.
+        // POI = POB - 1/2 * g * t^2 where t = distance / speed.
+        // But assume common adjustment.
+        // If projectile arrives at POI, where is POA?
+        let poa2poi0 = -0.5 * gravityPerSec2 * Math.pow(sightedInAt / speedPerSec, 2) - scopeHeight;
+        let poa2poi1 = -0.5 * gravityPerSec2 * Math.pow(distance / speedPerSec, 2) - scopeHeight;
+        let poi2poi0at1 = poa2poi0 * distance / sightedInAt;
+        let poiDist = poa2poi1 - poi2poi0at1;
+        // Draw a crosshair there.
+        // But do not draw duplicates.
+        let line = document.createElementNS(ns, 'line');
+        line.setAttribute('x1', (centerX - d / 2) / unit);
+        line.setAttribute('y1', (centerY + poiDist) / unit);
+        line.setAttribute('x2', (centerX + d / 2) / unit);
+        line.setAttribute('y2', (centerY + poiDist) / unit);
+        line.setAttribute('stroke', ringColor);
+        line.setAttribute('stroke-width', lineWidth / unit);
+        crosshairs.push(line);
+        line = document.createElementNS(ns, 'line');
+        line.setAttribute('x1', centerX / unit);
+        line.setAttribute('y1', (centerY + poiDist - d / 2) / unit);
+        line.setAttribute('x2', centerX / unit);
+        line.setAttribute('y2', (centerY + poiDist + d / 2) / unit);
+        line.setAttribute('stroke', ringColor);
+        line.setAttribute('stroke-width', lineWidth / unit);
+        crosshairs.push(line);
+        crosshairDrawn = true;
+      }
       break;
     }
     case '#':
@@ -733,6 +785,9 @@ function render() {
       alert('unknown command: ' + args[0]);
       break;
     }
+  }
+  for (const crosshair of crosshairs) {
+    svg.appendChild(crosshair);
   }
   svg.setAttribute('width', paperX + 'px');
   svg.setAttribute('height', paperY + 'px');
