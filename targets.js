@@ -642,7 +642,7 @@ function render() {
       ringWidth = toPx(args[1], null);
       break;
     case 'crosshairwidth':
-      ringWidth = toPx(args[1], null);
+      crosshairWidth = toPx(args[1], null);
       break;
     case 'fontsize':
       fontSize = toPx(args[1], null);
