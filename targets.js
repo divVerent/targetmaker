@@ -563,7 +563,8 @@ function render() {
   let paperY = 210 * mm;
   let centerX = 0;
   let centerY = 0;
-  let lineWidth = 0.2 * mm;
+  let ringWidth = 0.2 * mm;
+  let crosshairWidth = 0.5 * mm;
   let fontSize = 10 * mm;
 
   // Info for drawing rings.
@@ -611,7 +612,7 @@ function render() {
       }
       continue;
     }
-    switch (args[0]) {
+    switch (args[0].toLowerCase()) {
     case 'macro':
       recordToMacro = args[1];
       macros[recordToMacro] = [];
@@ -636,8 +637,11 @@ function render() {
       paperX = toPx(args[1], null);
       paperY = toPx(args[2], null);
       break;
-    case 'linewidth':
-      lineWidth = toPx(args[1], null);
+    case 'ringwidth':
+      ringWidth = toPx(args[1], null);
+      break;
+    case 'crosshairwidth':
+      ringWidth = toPx(args[1], null);
       break;
     case 'fontsize':
       fontSize = toPx(args[1], null);
@@ -719,22 +723,22 @@ function render() {
     case 'color':
       colors[args[1]] = toColor(colors, args[2]);
       break;
-    case 'sightedInAt':
+    case 'sightedinat':
       sightedInAt = toPx(args[1], null);
       break;
-    case 'scopeHeight':
+    case 'scopeheight':
       scopeHeight = toPx(args[1], null);
       break;
-    case 'speedPerSec':
+    case 'speedpersec':
       speedPerSec = toPx(args[1], null);
       break;
-    case 'gravityPerSec2':
+    case 'gravitypersec2':
       gravityPerSec2 = toPx(args[1], null);
       break;
     case 'ring': {
       // Note: d is a diameter.
       let d = toPxAdjusted(args[1], ringScale, distance, ringCaliberFrom, ringCaliberTo);
-      d -= lineWidth;
+      d -= ringWidth;
       if (d <= 0) {
         break;
       }
@@ -752,7 +756,7 @@ function render() {
       circle.setAttribute('cy', centerY / unit);
       circle.setAttribute('r', d / (2 * unit));
       circle.setAttribute('stroke', ringColor);
-      circle.setAttribute('stroke-width', lineWidth / unit);
+      circle.setAttribute('stroke-width', ringWidth / unit);
       circle.setAttribute('fill', innerColor);
       svg.appendChild(circle);
       let text = document.createElementNS(ns, 'text');
@@ -761,7 +765,7 @@ function render() {
       text.setAttribute('fill', textColor);
       text.setAttribute('text-anchor', 'middle');
       text.setAttribute('x', centerX / unit);
-      text.setAttribute('y', (centerY + d / 2 - lineWidth) / unit);
+      text.setAttribute('y', (centerY + d / 2 - ringWidth) / unit);
       text.setAttribute('alignment-baseline', 'bottom');
       let str = document.createTextNode(t);
       text.appendChild(str);
@@ -787,16 +791,16 @@ function render() {
         line.setAttribute('y1', (centerY + poiDist) / unit);
         line.setAttribute('x2', (centerX + d / 2) / unit);
         line.setAttribute('y2', (centerY + poiDist) / unit);
-        line.setAttribute('stroke', ringColor);
-        line.setAttribute('stroke-width', lineWidth / unit);
+        line.setAttribute('stroke', crosshairColor);
+        line.setAttribute('stroke-width', crosshairWidth / unit);
         crosshairs.push(line);
         line = document.createElementNS(ns, 'line');
         line.setAttribute('x1', centerX / unit);
         line.setAttribute('y1', (centerY + poiDist - d / 2) / unit);
         line.setAttribute('x2', centerX / unit);
         line.setAttribute('y2', (centerY + poiDist + d / 2) / unit);
-        line.setAttribute('stroke', ringColor);
-        line.setAttribute('stroke-width', lineWidth / unit);
+        line.setAttribute('stroke', crosshairColor);
+        line.setAttribute('stroke-width', crosshairWidth / unit);
         crosshairs.push(line);
         crosshairDrawn = true;
       }
