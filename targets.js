@@ -576,6 +576,7 @@ function render() {
   let ringColor = 'black';
   let innerColor = 'grey';
   let textColor = 'black';
+  let crosshairColor = 'black';
   let distance = null;
   let distanceStr = null;
   let distanceSet = false;
@@ -713,6 +714,9 @@ function render() {
       break;
     case 'ringcolor':
       ringColor = toColor(colors, args[1]);
+      break;
+    case 'crosshaircolor':
+      crosshairColor = toColor(colors, args[1]);
       break;
     case 'innercolor':
       innerColor = toColor(colors, args[1]);
