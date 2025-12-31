@@ -380,14 +380,8 @@ end
 
 macro PrecisionPistol@5m
 targetcaliber? .22in
-center -8.5cm -8.5cm
-text +
-center -8.5cm 8.5cm
-text +
-center 8.5cm -8.5cm
-text +
-center 8.5cm 8.5cm
-text +
+center 0cm 0cm
+rect 17cm 17cm
 center 0cm -8cm
 distance? 5m
 text Precision Pistol @ %distance%
@@ -565,6 +559,7 @@ function render() {
   let centerY = 0;
   let ringWidth = 0.2 * mm;
   let crosshairWidth = 0.5 * mm;
+  let rectWidth = 0.2 * mm;
   let fontSize = 10 * mm;
 
   // Info for drawing rings.
@@ -577,6 +572,7 @@ function render() {
   let innerColor = 'grey';
   let textColor = 'black';
   let crosshairColor = 'black';
+  let rectColor = 'black';
   let distance = null;
   let distanceStr = null;
   let distanceSet = false;
@@ -660,6 +656,20 @@ function render() {
       let str = document.createTextNode(t);
       text.appendChild(str);
       svg.appendChild(text);
+      break;
+    }
+    case 'rect': {
+      let w = toPx(args[1], null);
+      let h = toPx(args[2], null);
+      let rect = document.createElementNS(ns, 'rect');
+      rect.setAttribute('x', (centerX - w / 2) / unit);
+      rect.setAttribute('y', (centerY - h / 2) / unit);
+      rect.setAttribute('width', w / unit);
+      rect.setAttribute('height', h / unit);
+      rect.setAttribute('stroke', rectColor);
+      rect.setAttribute('stroke-width', rectWidth / unit);
+      rect.setAttribute('fill', 'none');
+      svg.appendChild(rect);
       break;
     }
     case 'center':
