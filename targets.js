@@ -409,7 +409,7 @@ center 0cm 0cm
 rect 17cm 17cm
 center 0cm -8cm
 distance? 5m
-text Precision Pistol @ %distance%
+text ISSF Air Pistol @ %distance%
 center -4cm 0cm
 use ISSF-10m
 center -4cm 4cm
