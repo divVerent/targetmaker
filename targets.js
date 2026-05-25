@@ -216,7 +216,7 @@ ring 0.5mm@10m 10
 textcolor black
 end
 
-macro B-40
+macro ISSF-10m
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
@@ -234,6 +234,10 @@ ring 43.5mm@10m 8
 ring 27.5mm@10m 9
 ring 11.5mm@10m 10
 textcolor black
+end
+
+macro B-40
+use ISSF-10m
 end
 
 macro 6mil/6
@@ -396,6 +400,23 @@ text Timed Fire
 center -4cm 4cm
 use B-3
 center -4cm 8cm
+text Rapid Fire
+end
+
+macro ISSF@5m
+targetcaliber? .22in
+center 0cm 0cm
+rect 17cm 17cm
+center 0cm -8cm
+distance? 5m
+text Precision Pistol @ %distance%
+center -4cm 0cm
+use ISSF-10m
+center -4cm 4cm
+text Slow Fire
+center 4cm 0cm
+use ISSF-10m
+center 4cm 4cm
 text Rapid Fire
 end
 
