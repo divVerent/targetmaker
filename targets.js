@@ -1,3 +1,5 @@
+'use strict';
+
 function toPx(w, distance) {
   let result = /^([-+]?\d*\.?\d*)([a-z]+)$/.exec(w);
   if (result == null) {
@@ -88,12 +90,14 @@ macro B-2
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
+crosshaircolor $target_crosshair
 ring 7.33in@50ft 4@mm
 ring 5.56in@50ft 5
 ring 4.16in@50ft 6
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
+crosshaircolor $bullseye_crosshair
 ring 3.07in@50ft 7
 ring 2.23in@50ft 8
 ring 1.54in@50ft 9
@@ -105,12 +109,14 @@ macro B-3
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
+crosshaircolor $target_crosshair
 ring 8.32in@50ft 6@mm
 ring 6.14in@50ft 7
 ring 4.46in@50ft 8
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
+crosshaircolor $bullseye_crosshair
 ring 3.06in@50ft 9
 ring 1.80in@50ft 10
 ring 0.90in@50ft X
@@ -121,6 +127,7 @@ macro SR
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
+crosshaircolor $target_crosshair
 ring 37in@200yd 5@mm
 ring 31in@200yd 6
 ring 25in@200yd 7
@@ -128,6 +135,7 @@ ring 19in@200yd 8
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
+crosshaircolor $bullseye_crosshair
 ring 13in@200yd 9
 ring 7in@200yd 10
 ring 3in@200yd X
@@ -138,12 +146,14 @@ macro SR-3
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
+crosshaircolor $target_crosshair
 ring 37in@300yd 5@mm
 ring 31in@300yd 6
 ring 25in@300yd 7
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
+crosshaircolor $bullseye_crosshair
 ring 19in@300yd 8
 ring 13in@300yd 9
 ring 7in@300yd 10
@@ -155,11 +165,13 @@ macro MR-1
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
+crosshaircolor $target_crosshair
 ring 60in@600yd 5@mm
 ring 48in@600yd 6
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
+crosshaircolor $bullseye_crosshair
 ring 36in@600yd 7
 ring 24in@600yd 8
 ring 18in@600yd 9
@@ -172,12 +184,14 @@ macro AP-1
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
+crosshaircolor $target_crosshair
 ring 18in@50ft 5
 ring 12in@50ft 8
 ring 8in@50ft 10@mm
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
+crosshaircolor $bullseye_crosshair
 ring 4in@50ft X
 textcolor black
 end
@@ -186,12 +200,14 @@ macro AP-2
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
+crosshaircolor $target_crosshair
 ring 5in@15ft 5@mm
 ring 3.36in@15ft 8
 ring 2.24in@15ft 10
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
+crosshaircolor $bullseye_crosshair
 ring 1.12in@15ft X
 textcolor black
 end
@@ -200,12 +216,14 @@ macro AR-5
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
+crosshaircolor $target_crosshair
 ring 45.5mm@10m 1@mm
 ring 40.5mm@10m 2
 ring 35.5mm@10m 3
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
+crosshaircolor $bullseye_crosshair
 ring 30.5mm@10m 4
 ring 25.5mm@10m 5
 ring 20.5mm@10m 6
@@ -220,6 +238,7 @@ macro ISSF-10m
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
+crosshaircolor $target_crosshair
 ring 155.5mm@10m 1@mm
 ring 139.5mm@10m 2
 ring 123.5mm@10m 3
@@ -229,6 +248,7 @@ ring 75.5mm@10m 6
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
+crosshaircolor $bullseye_crosshair
 ring 59.5mm@10m 7
 ring 43.5mm@10m 8
 ring 27.5mm@10m 9
@@ -244,6 +264,7 @@ macro 6mil/6
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
+crosshaircolor $target_crosshair
 ring 6mil 6mil@mm
 ring 5mil 5mil
 ring 4mil 4mil
@@ -251,6 +272,7 @@ ring 3mil 3mil
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
+crosshaircolor $bullseye_crosshair
 ring 2mil 2mil
 ring 1mil 1mil
 textcolor black
@@ -260,10 +282,12 @@ macro 2mil/4
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
+crosshaircolor $target_crosshair
 ring 2mil 2mil@mm
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
+crosshaircolor $bullseye_crosshair
 ring 1.5mil 1.5mil
 ring 1mil 1mil
 ring 0.5mil 0.5mil
@@ -274,6 +298,7 @@ macro 4mil/8
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
+crosshaircolor $target_crosshair
 ring 4mil 4mil@mm
 ring 3.5mil 3.5mil
 ring 3mil 3mil
@@ -282,6 +307,7 @@ ring 2mil 2mil
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
+crosshaircolor $bullseye_crosshair
 ring 1.5mil 1.5mil
 ring 1mil 1mil
 ring 0.5mil 0.5mil
@@ -292,11 +318,13 @@ macro 2mil/10
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
+crosshaircolor $target_crosshair
 ring 2mil 2mil@mm
 ring 1.8mil 1.8mil
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
+crosshaircolor $bullseye_crosshair
 ring 1.6mil 1.6mil
 ring 1.4mil 1.4mil
 ring 1.2mil 1.2mil
@@ -312,6 +340,7 @@ macro 24moa/8
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
+crosshaircolor $target_crosshair
 ring 24moa 24moa@mm
 ring 21moa 21moa
 ring 18moa 18moa
@@ -321,6 +350,7 @@ ring 9moa 9moa
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
+crosshaircolor $bullseye_crosshair
 ring 6moa 6moa
 ring 3moa 3moa
 textcolor black
@@ -330,6 +360,7 @@ macro 16moa/8
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
+crosshaircolor $target_crosshair
 ring 16moa 16moa@mm
 ring 14moa 14moa
 ring 12moa 12moa
@@ -338,6 +369,7 @@ ring 8moa 8moa
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
+crosshaircolor $bullseye_crosshair
 ring 6moa 6moa
 ring 4moa 4moa
 ring 2moa 2moa
@@ -348,11 +380,13 @@ macro 8moa/8
 ringcolor $target_ring
 innercolor $target_inner
 textcolor $target_text
+crosshaircolor $target_crosshair
 ring 8moa 8moa@mm
 ring 7moa 7moa
 ringcolor $bullseye_ring
 innercolor $bullseye_inner
 textcolor $bullseye_text
+crosshaircolor $bullseye_crosshair
 ring 6moa 6moa
 ring 5moa 5moa
 ring 4moa 4moa
@@ -592,8 +626,9 @@ function render() {
   let ringColor = 'black';
   let innerColor = 'grey';
   let textColor = 'black';
-  let crosshairColor = 'black';
+  let crosshairColor = 'auto';
   let rectColor = 'black';
+  let bgColor = 'white'; // Kinda implicit.
   let distance = null;
   let distanceStr = null;
   let distanceSet = false;
@@ -601,6 +636,7 @@ function render() {
   let scopeHeight = 0 * mm;
   let speedPerSec = Infinity;
   let gravityPerSec2 = 9810 * mm;
+  let crosshairDrawn = null;
 
   let stack = (preamble + str).split(/\r?\n/).reverse();
   let crosshairs = [];
@@ -611,9 +647,11 @@ function render() {
     '$target_ring': 'black',
     '$target_inner': 'white',
     '$target_text': 'black',
+    '$target_crosshair': 'rgba(0, 0, 0, 0.25)',
     '$bullseye_ring': 'red',
     '$bullseye_inner': 'black',
     '$bullseye_text': 'white',
+    '$bullseye_crosshair': 'black',
   };
 
   while (stack.length > 0) {
@@ -696,7 +734,7 @@ function render() {
     case 'center':
       centerX = toPx(args[1], null);
       centerY = toPx(args[2], null);
-      crosshairDrawn = false;
+      crosshairDrawn = null;
       break;
     case 'distance?':
       if (distanceSet)
@@ -805,7 +843,8 @@ function render() {
       let str = document.createTextNode(t);
       text.appendChild(str);
       svg.appendChild(text);
-      if (sightedInAt != null && !crosshairDrawn) {
+      if (sightedInAt != null && crosshairColor != crosshairDrawn) {
+        crosshairDrawn = crosshairColor;
         // Compute point of aim adjustment!
         // Assume that at sightedInAt, POI == POA.
         // As we do not know aim angle, assume aim angle = 0.
@@ -837,7 +876,6 @@ function render() {
         line.setAttribute('stroke', crosshairColor);
         line.setAttribute('stroke-width', crosshairWidth / unit);
         crosshairs.push(line);
-        crosshairDrawn = true;
       }
       break;
     }
