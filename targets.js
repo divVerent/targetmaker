@@ -896,7 +896,7 @@ function render() {
   svg.setAttribute('width', paperX + 'px');
   svg.setAttribute('height', paperY + 'px');
   svg.setAttribute('viewBox', (-paperX * 0.5 / unit) + ' ' + (-paperY * 0.5 / unit) + ' ' + (paperX / unit) + ' ' + (paperY / unit));
-  document.body.appendChild(svg);
+  document.getElementById('target_container').appendChild(svg);
   return ok;
 }
 

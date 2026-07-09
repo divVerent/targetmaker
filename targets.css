@@ -1,33 +1,49 @@
-@media print {
-	@page {
-		margin: 0;
-	}
-	html {
-		border: 0;
-		margin: 0;
-		padding: 0;
-		max-height: 99%;
-	}
-	body {
-		border: 0;
-		margin: 0;
-		padding: 0;
-	}
-	#target_spec, #make_svg {
-		display: none;
-	}
-	#target_svg {
-		position: absolute;
-		left: 0px;
-		top: 0px;
-	}
+html, body {
+	border: 0mm;
+	margin: 0mm;
+	padding: 0mm;
 }
 
 #unit_converter {
 	display: none;
 }
 
+#target_container {
+	display: grid;
+	grid-template-columns: auto 1fr;
+	height: 100vh;
+}
+
 #target_spec {
-	width: 100%;
-	height: 30em;
+	width: 24em;
+	height: 100vh;
+	border: none;
+	margin: 0mm;
+	padding: 0mm;
+	position: sticky;
+	left: 0mm;
+	top: 0mm;
+	resize: horizontal;
+}
+
+#target_svg {
+	border: 2px dashed;
+}
+
+@media print {
+	@page {
+		margin: 0mm;
+	}
+	html, body {
+		max-height: 100%;
+	}
+	#target_spec {
+		display: none;
+	}
+	#target_svg {
+		position: fixed;
+		left: 0mm;
+		top: 0mm;
+		border: none;
+	}
 }
